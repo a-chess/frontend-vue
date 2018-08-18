@@ -17,6 +17,7 @@ gem 'haml-rails'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'config'
 gem 'jbuilder', '~> 2.5'
+gem 'webpacker', '~> 3.5'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
