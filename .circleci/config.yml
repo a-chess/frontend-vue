@@ -46,7 +46,7 @@ jobs:
       - run: bundle exec rake db:schema:load
 
       # yarn install
-      - run: yarn
+      - run: yarn install
 
       # Precompile assets
       - run: bundle exec bin/webpack
