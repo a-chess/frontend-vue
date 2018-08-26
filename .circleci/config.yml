@@ -52,4 +52,4 @@ jobs:
       - run: bundle exec bin/webpack
 
       # Run the rspec
-      - run: bundle exec rake rspec --color --fail-fast
+      - run: bundle exec rspec --color --fail-fast
