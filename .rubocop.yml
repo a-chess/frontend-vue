@@ -4,6 +4,7 @@ AllCops:
     - "db/*"
     - 'config/**/*'
     - 'bin/*'
+    - 'node_modules/**/*'
 
 Metrics/LineLength:
   Exclude:

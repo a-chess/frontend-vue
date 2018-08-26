@@ -1,0 +1,52 @@
+---
+version: 2
+jobs:
+  build:
+    parallelism: 1
+    working_directory: ~/prj-lowen/lowen
+    docker:
+      - image: circleci/ruby:2.5.1-node-browsers
+        environment:
+          LOWEN_DB_HOST: 127.0.0.1
+          LOWEN_DB_USER_NAME: root
+          LOWEN_DB_PASSWORD: ""
+          RAILS_ENV: test
+      - image: mysql:5.7
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: lowen_test
+
+    steps:
+      - checkout
+
+      # Restore Cached Dependencies
+      - type: cache-restore
+        name: Restore bundle cache
+        key: lowen-{{ checksum "Gemfile.lock" }}
+
+      # Bundle install dependencies
+      - run: bundle install --path vendor/bundle
+
+      # Cache Dependencies
+      - type: cache-save
+        name: Store bundle cache
+        key: lowen-{{ checksum "Gemfile.lock" }}
+        paths:
+          - vendor/bundle
+
+      - run: bundle exec rubocop
+
+      # Wait for DB
+      - run: dockerize -wait tcp://localhost:3306 -timeout 1m
+
+      # Setup the database
+      - run: bundle exec rake db:create
+      - run: bundle exec rake db:schema:load
+
+      - run: yarn
+
+      # Precompile assets
+      - run: bundle exec bin/webpack
+
+      # Run the tests
+      - run: bundle exec rake spec SPEC_OPTS="--color --fail-fast"
