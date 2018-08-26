@@ -16,14 +16,15 @@ jobs:
         environment:
           POSTGRES_USER: hyuga
           POSTGRES_DB: frontend_test
+    
     steps:
       - checkout
 
       # Restore bundle cache
       - restore_cache:
-        keys:
-          - rails-demo-{{ checksum "Gemfile.lock" }}
-          - rails-demo-
+          keys:
+            - rails-demo-{{ checksum "Gemfile.lock" }}
+            - rails-demo-
       
       # Bundle install dependencies
       - run:
