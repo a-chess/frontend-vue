@@ -41,12 +41,12 @@ jobs:
       
       - run: bundle exec rubocop
 
+      # yarn install
+      - run: yarn
+
       # Setup the database
       - run: bundle exec rake db:create
       - run: bundle exec rake db:schema:load
-
-      # yarn install
-      - run: yarn install
 
       # Precompile assets
       - run: bundle exec bin/webpack
